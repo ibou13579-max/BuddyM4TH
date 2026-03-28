@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MathSolver</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Nunito+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"><\/script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"><\/script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="atm"><div class="atm-g"></div><div class="orb o1"></div><div class="orb o2"></div><div id="stars"></div></div>
+<div class="app">
+<div class="topbar"><div class="lang-sw" onclick="toggleDD()"><div class="globe"><div class="gl-h"></div><div class="gl-h2"></div><div class="gl-h3"></div></div><span class="lang-l" id="ll">FR</span><div class="lang-dd" id="dd"><div class="lang-opt on" data-l="fr" onclick="event.stopPropagation();setL('fr')"><span>🇫🇷</span> Français</div><div class="lang-opt" data-l="en" onclick="event.stopPropagation();setL('en')"><span>🇬🇧</span> English</div></div></div></div>
+<div class="hdr"><div class="logo"><div class="logo-i">∑</div><span class="logo-t">MathSolver</span></div><p class="hdr-s" data-i="sub"></p></div>
+<div class="tabs">
+<button class="tab on" onclick="swM('text',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg><span class="tl" data-i="tw"></span></button>
+<button class="tab" onclick="swM('photo',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span class="tl" data-i="tp"></span></button>
+<button class="tab" onclick="swM('file',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg><span class="tl" data-i="tf"></span></button>
+</div>
+<!-- text -->
+<div class="pnl on" id="p-text"><div class="icard"><div class="ibar"><span class="ilbl" data-i="yp"></span><div class="ftog"><button class="fbtn on" onclick="setF(this,'text')">Texte</button><button class="fbtn" onclick="setF(this,'latex')">LaTeX</button></div></div><textarea class="pin" id="ti" data-ip="tph"></textarea></div><div class="exrow" id="exr"></div></div>
+<!-- photo -->
+<div class="pnl" id="p-photo">
+<div class="uzone" id="pz" onclick="document.getElementById('pf').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="event.preventDefault();this.classList.remove('drag');hdP(event)"><div id="pp"><span class="uicon">📸</span><div class="utitle" data-i="pd"></div><div class="uhint" data-i="ph"></div><div class="ufmts"><span class="ubadge">JPG</span><span class="ubadge">PNG</span><span class="ubadge">WEBP</span></div></div><div id="ppv" style="display:none"></div></div>
+<input type="file" id="pf" accept="image/*" onchange="hsP(event)">
+<div class="swarn" id="psw"></div>
+<div class="opts" id="po"><div class="ocard"><div class="olbl"><span>💬</span><span data-i="instr"></span><span class="opt-t" data-i="opt"></span></div><textarea class="ota" id="pci" data-ip="instrph"></textarea><div class="cex" id="pce"></div></div></div>
+</div>
+<!-- file -->
+<div class="pnl" id="p-file">
+<div class="uzone" id="fz" onclick="document.getElementById('ff').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="event.preventDefault();this.classList.remove('drag');hdF(event)"><div id="fp"><span class="uicon">📄</span><div class="utitle" data-i="fd"></div><div class="uhint" data-i="fh"></div><div class="ufmts"><span class="ubadge">PDF</span></div></div><div id="fpv" style="display:none"></div></div>
+<input type="file" id="ff" accept=".pdf,application/pdf" onchange="hsF(event)">
+<div class="swarn" id="fsw"></div>
+<div class="opts" id="fo"><div class="ocard"><div class="olbl"><span>💬</span><span data-i="instr"></span><span class="opt-t" data-i="opt"></span></div><textarea class="ota" id="fci" data-ip="instrph"></textarea><div class="cex" id="fce"></div></div></div>
+</div>
+<!-- buttons -->
+<div class="srow"><button class="sbtn" id="sb" onclick="solve()"><span class="sl" data-i="sv"></span><div class="sp"></div></button><button class="xbtn" id="xb" onclick="stopIt()"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg><span data-i="st"></span></button></div>
+<div class="ebar" id="eb"></div>
+<div class="xbar" id="xbar"><span>⏹</span><span id="xt"></span></div>
+<div class="tbar" id="tb"><div class="tpulse" id="tpu"></div><span class="ttxt" id="ttx"></span><span class="tval" id="tvl">0.0s</span><span class="test" id="tes"></span></div>
+<div class="sol" id="s1"><div class="solh"><span class="solt" data-i="stt"></span><div class="sola"><span class="solbr" id="sb1"></span><button class="solcpy" onclick="cpS(1)" data-i="cp"></button></div></div><div class="solb" id="sb1b"></div></div>
+<div class="vbar" id="vb"><div class="vsp" id="vsp"></div><span class="vi" id="vic" style="display:none"></span><span class="vtx" id="vtx"></span></div>
+<div class="fbar" id="fb"><div class="fq" data-i="fq"></div><div class="fbs" id="fbs"><button class="fb fby" onclick="fbk('y')" data-i="fy"></button><button class="fb fbn" onclick="fbk('n')" data-i="fn"></button></div><div class="fdone" id="fd"></div></div>
+<div class="rsec" id="rs"><div class="rh" data-i="rh"></div><div class="rst" id="rst"></div></div>
+<div class="sol" id="s2" style="border-color:rgba(52,211,153,.25)"><div class="solh" style="background:rgba(52,211,153,.03)"><span class="solt" style="color:var(--grn)" data-i="ct"></span><div class="sola"><span class="solbr" id="sb2"></span><button class="solcpy" onclick="cpS(2)" data-i="cp"></button></div></div><div class="solb" id="sb2b"></div></div>
+<!-- follow-up -->
+<div class="followup" id="fu">
+<div class="fu-label" data-i="ful"></div>
+<div class="fu-row"><textarea class="fu-input" id="fui" data-ip="fuph" rows="2"></textarea><button class="fu-btn" onclick="followUp()"><span class="fu-btn-label" data-i="fusend"></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></button></div>
+</div>
+<div class="hist" id="hs" style="display:none"><div class="htt" data-i="hi"></div><div id="hl"></div></div>
+<div class="ft">MathSolver — Claude AI</div>
+</div>
+<script src="js/app.js"><\/script>
+</body>
+</html>
